@@ -48,7 +48,8 @@ module.exports = {
      * obeys the writeable stream contract.
      */
     createCsv: function (stream) {
-        var writer = csvWriter({headers: ['category', 'title', 'resource',
+        var writer = csvWriter({headers: ['subscriptionId', 'subscriptionName',
+					  'category', 'title', 'resource',
                                           'region', 'statusWord', 'message']});
         writer.pipe(stream);
 
@@ -73,7 +74,8 @@ module.exports = {
                     statusWord = 'UNKNOWN';
                 }
         
-                this.writer.write([plugin.category, plugin.title,
+                this.writer.write([globalAzureSubId, globalAzureSubName,
+				   plugin.category, plugin.title,
                                    (result.resource || 'N/A'),
                                    (result.region || 'Global'),
                                    statusWord, result.message]);

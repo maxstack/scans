@@ -8,6 +8,10 @@ var GitHubConfig;
 var OracleConfig;
 var GoogleConfig;
 
+// Configure the below environment variables for Azure Subscription CSV support
+global.globalAzureSubId = process.env.AZURE_SUBSCRIPTION_ID
+global.globalAzureSubName = process.env.AZURE_SUBSCRIPTION_NAME
+
 // OPTION 1: Configure service provider credentials through hard-coded config objects
 
 // AWSConfig = {
