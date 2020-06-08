@@ -18,8 +18,13 @@
 
 var AWS = require('aws-sdk');
 var async = require('async');
+var https = require('https');
 var helpers = require(__dirname + '/../../helpers/aws');
 var collectors = require(__dirname + '/../../collectors/aws');
+
+// Override max sockets
+var agent = new https.Agent({maxSockets: 100});
+AWS.config.update({httpOptions: {agent: agent}});
 
 var globalServices = [
     'S3',
@@ -101,6 +106,12 @@ var calls = {
         describeDirectories: {
             property: 'DirectoryDescriptions',
             paginate: 'NextToken'
+        }
+    },
+    DMS: {
+        describeReplicationInstances: {
+            property: 'ReplicationInstances',
+            paginate: 'Marker'
         }
     },
     DynamoDB: {
@@ -645,6 +656,21 @@ var postcalls = [
                 reliesOnCall: 'describeTargetGroups',
                 filterKey: 'TargetGroupArn',
                 filterValue: 'TargetGroupArn'
+            },
+            describeLoadBalancerAttributes: {
+                reliesOnService: 'elbv2',
+                reliesOnCall: 'describeLoadBalancers',
+                override: true
+            },
+            describeListeners: {
+                reliesOnService: 'elbv2',
+                reliesOnCall: 'describeLoadBalancers',
+                override: true
+            },
+            describeTargetGroups: {
+                reliesOnService: 'elbv2',
+                reliesOnCall: 'describeLoadBalancers',
+                override: true
             }
         },
         IAM: {
@@ -1081,7 +1107,6 @@ var collect = function (AWSConfig, settings, callback) {
                 postcallCb();
             });
         }, function () {
-            //console.log(JSON.stringify(collection, null, 2));
             callback(null, collection);
         });
     });

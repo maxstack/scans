@@ -79,7 +79,17 @@ var calls = {
         get: {
             api: "iam",
             filterKey: ['compartmentId'],
+            filterValue: ['tenancyId'],
+            filterConfig: [true]
+        }
+    },
+    namespace: {
+        get: {
+            api: "objectStore",
+            filterKey: ['compartmentId'],
             filterValue: ['compartmentId'],
+            restVersion: "",
+            filterConfig: [true]
         }
     },
     group: {
@@ -220,6 +230,7 @@ var calls = {
             api: 'audit',
             filterKey: ['compartmentId'],
             filterValue: ['compartmentId'],
+            filterConfig: [true]
         }
     },
     networkSecurityGroup: {
@@ -282,12 +293,13 @@ var postcalls = {
     bucket: {
         list: {
             api: "objectStore",
-            reliesOnService: ['compartment'],
+            reliesOnService: ['namespace'],
             reliesOnCall: ['get'],
-            filterKey: ['compartmentId', 'namespaceName'],
-            filterValue: ['compartmentId', 'name'],
+            filterKey: ['compartmentId','namespaceName'],
+            filterValue: ['compartmentId','namespaceName'],
             filterConfig: [true, false],
-            restVersion: ""
+            restVersion: "",
+            limit: 900
         }
     },
     waasPolicy: {
@@ -347,11 +359,11 @@ var finalcalls = {
     bucket: {
         get: {
             api: "objectStore",
-            reliesOnService: ['bucket'],
-            reliesOnCall: ['list'],
-            filterKey: ['namespaceName', 'bucketName'],
-            filterValue: ['namespace', 'name'],
-            restVersion: ""
+            reliesOnService: ['bucket','namespace'],
+            reliesOnCall: ['list', 'get'],
+            filterKey: ['bucketName', 'namespaceName'],
+            filterValue: ['name','namespace'],
+            restVersion: "",
         }
     },
     exprt: {
@@ -368,10 +380,10 @@ var finalcalls = {
     preAuthenticatedRequest: {
         list: {
             api: "objectStore",
-            reliesOnService: ['bucket'],
-            reliesOnCall: ['list'],
-            filterKey: ['namespaceName', 'bucketName'],
-            filterValue: ['namespace', 'name'],
+            reliesOnService: ['bucket','namespace'],
+            reliesOnCall: ['list', 'get'],
+            filterKey: ['bucketName', 'namespaceName'],
+            filterValue: ['name','namespace'],
             restVersion: ""
         }
     },

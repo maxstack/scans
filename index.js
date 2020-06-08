@@ -22,11 +22,11 @@ global.globalAzureSubName = process.env.AZURE_SUBSCRIPTION_NAME
 // };
 
 // AzureConfig = {
-//  ApplicationID: '',          // A.K.A ClientID
-//  KeyValue: '',               // Secret
-//  DirectoryID: '',            // A.K.A TenantID or Domain
-//  SubscriptionID: '',
-//  location: 'East US'
+//     ApplicationID: '',          // A.K.A ClientID
+//     KeyValue: '',               // Secret
+//     DirectoryID: '',            // A.K.A TenantID or Domain
+//     SubscriptionID: '',
+//     location: 'East US'
 // };
 
 // GitHubConfig = {
@@ -110,6 +110,10 @@ if(process.env.GOOGLE_PROJECT_ID && process.env.GOOGLE_API_KEY){
         serviceId: process.env.GOOGLE_SERVICE_ID,
         region: process.env.GOOGLE_DEFAULT_REGION || 'us-east1'
     };
+}
+if(process.env.GOOGLE_APPLICATION_CREDENTIALS){
+    GoogleConfig = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+    GoogleConfig.project = GoogleConfig.project_id;
 }
 
 // Custom settings - place plugin-specific settings here
